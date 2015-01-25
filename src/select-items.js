@@ -60,7 +60,7 @@
      * @ngInject
      */
     function selectItems($timeout, $templateCache, selectItemsConfiguration, SelectItemsActiveItemNavigator,
-                         orderByFilter, filterFilter, highlightWordFilter) {
+                         orderByFilter, filterFilter, selectItemsHighlightWordFilter) {
 
         return {
             scope: {
@@ -182,7 +182,7 @@
                 scope.getItemName = function(item) {
                     var value = selectOptionsCtrl.parseItemName(item);
                     value = String(value).replace(/<[^>]+>/gm, ''); // strip html from the data here
-                    return scope.decorator ? scope.decorator(item) : highlightWordFilter(value, scope.searchKeyword);
+                    return scope.decorator ? scope.decorator(item) : selectItemsHighlightWordFilter(value, scope.searchKeyword);
                 };
 
                 /**

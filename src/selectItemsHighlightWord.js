@@ -3,7 +3,7 @@
 /**
  * @author Umed Khudoiberdiev
  */
-angular.module('selectItems').filter('highlightWord', function () {
+angular.module('selectItems').filter('selectItemsHighlightWord', function () {
 
     function escapeRegExp(str) {
         return str.replace(/[\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/g, "\\$&");

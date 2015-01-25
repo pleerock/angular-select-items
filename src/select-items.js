@@ -159,7 +159,9 @@
                  */
                 scope.getItemGroup = function(item) {
                     var value = selectOptionsCtrl.parseItemGroup(item);
-                    value = String(value).replace(/<[^>]+>/gm, ''); // strip html from the data here
+                    if (value)
+                        value = String(value).replace(/<[^>]+>/gm, ''); // strip html from the data here
+
                     return scope.groupDecorator ? scope.groupDecorator(item) : value;
                 };
 
@@ -503,6 +505,5 @@
             }
         };
     }
-
 
 })();

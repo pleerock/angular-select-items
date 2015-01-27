@@ -6,11 +6,11 @@
             || getDisplayedItems().length > 0"
         disable-all="disabled">
     <ul>
-        <li ng-show="loadingInProgress">{{ loadingLabel }}</li>
-        <li ng-show="search && !loadingInProgress" class="select-items-search">
+        <li ng-show="loadingInProgress" class="select-list-item">{{ loadingLabel }}</li>
+        <li ng-show="search && !loadingInProgress" class="select-items-search select-list-item">
             <input ng-model="searchKeyword" ng-attr-placeholder="{{ searchPlaceholder }}">
         </li>
-        <li class="select-all"
+        <li class="select-all select-list-item"
             ng-class="{ 'can-be-active' : activeItem === null }"
             ng-show="multiselect && selectAll && getDisplayedItems().length > 0"
             ng-mouseover="setActiveItem(null)"
@@ -22,13 +22,15 @@
             ng-click="selectItem()"
             ng-mouseover="setActiveItem(null)"
             ng-class="{ 'active' : !activeItem }"
-            class="no-selection">
+            class="no-selection select-list-item">
             <input ng-show="!hideControls" type="radio" ng-checked="!isAnyItemSelected()"> {{ noSelectionLabel }}
         </li>
         <li ng-repeat="item in getDisplayedItems()"
             class="select-item">
             <div class="select-item-container">
-                <div class="select-items-group"
+                <div class="select-list-item select-items-group"
+                     ng-class="{ 'all-selected': areAllGroupItemsSelected(item), 'select-all-enabled': groupSelectAll }"
+                     ng-mouseover="setActiveItem(null)"
                      ng-show="($index === 0 || getItemGroup(item) !== getItemGroupOfItemsAt($index - 1)) && getItemGroup(item)"
                      ng-click="toggleGroupItemsSelection(item)">
                     <input class="item-control"
@@ -37,12 +39,14 @@
                            ng-checked="areAllGroupItemsSelected(item)">
                     <span class="select-item-group-template" ng-bind-html="getItemGroup(item)"></span>
                 </div>
-                <div ng-mouseover="setActiveItem(item)"
+                <div class="select-list-item"
+                     ng-mouseover="setActiveItem(item)"
                      ng-click="selectItem(item)"
                      ng-class="{ 'active' : activeItem === item, 'selected': isItemSelected(item) }">
                     <input class="item-control"
                            ng-show="!hideControls"
                            ng-attr-type="{{ multiselect ? 'checkbox' : 'radio' }}"
+                           ng-disabled="selectionLimit > 0 && ngModel.length >= selectionLimit && !isItemSelected(item)"
                            ng-checked="isItemSelected(item)">
                     <span class="select-item-template" ng-bind-html="getItemName(item)"></span>
                 </div>

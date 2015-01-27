@@ -12,11 +12,15 @@
      * This directive provides a ability to select items from the given list to the given model.
      * Supports both multiple and single select modes.
      *
+     * @param {expression} ngModel Model that will be changed
+     * @param {expression} onChange Expression to be evaluated when model is changed
+     * @param {expression} selectOptions Options to be parsed and used for items data source and other options
      * @param {boolean} disabled If set to true then all interactions with the component will be disabled
      * @param {boolean} multiselect If set to true then user can select multiple options from the list of items. In this
      *                              case ng-model will be an array. If set to false then user can select only one option
      *                              from the list of items. In this case ng-model will not be array
      * @param {number} showLimit Maximal number of items to show in the list
+     * @param {number} selectionLimit Maximal number of items that are allowed to be selected
      * @param {boolean} search If set to true, then search input will be shown to the user, where he can peform a search
      *                          in the list of items
      * @param {Function} searchFilter Filter that controls the result of the search input
@@ -64,9 +68,11 @@
 
         return {
             scope: {
+                ngModel: '=',
                 disabled: '=?',
                 multiselect: '=?',
                 showLimit: '=?',
+                selectionLimit: '=?',
                 search: '=?',
                 searchFilter: '=?',
                 searchKeyword: '=?',
@@ -95,7 +101,7 @@
             require: ['ngModel', 'selectOptions'],
             template: function(element) {
                 var html = element.html().trim();
-                if (html) return '<div>' + html + '</div>';
+                if (html) return '<div class="select-items">' + html + '</div>';
                 return $templateCache.get('select-items.html');
             },
             link: function (scope, element, attrs, controllers) {
@@ -110,7 +116,7 @@
                 scope.deselectAllLabel              = scope.deselectAllLabel  || selectItemsConfiguration.deselectAllLabel;
                 scope.noSelectionLabel              = scope.noSelectionLabel  || selectItemsConfiguration.noSelectionLabel;
                 scope.loadingLabel                  = scope.loadingLabel      || selectItemsConfiguration.loadingLabel;
-                scope.loadByKeywordMinQueryLength   = scope.loadByKeywordMinQueryLength ? parseInt(attrs.loadByKeywordMinQueryLength) : selectItemsConfiguration.loadByKeywordMinQueryLength;
+                scope.loadByKeywordMinQueryLength   = attrs.loadByKeywordMinQueryLength ? parseInt(attrs.loadByKeywordMinQueryLength) : selectItemsConfiguration.loadMinQueryLength;
                 scope.loadByKeywordDelay            = scope.loadByKeywordDelay ? parseInt(attrs.loadByKeywordDelay) : selectItemsConfiguration.loadByKeywordDelay;
 
                 // ---------------------------------------------------------------------
@@ -314,6 +320,7 @@
                  * @param {object} item
                  */
                 scope.selectItem = function(item) {
+
                     var value = selectOptionsCtrl.parseItemValue(item);
                     var newSelection = false;
                     var index = null;
@@ -324,8 +331,13 @@
                         model = ngModelCtrl.$modelValue || [];
 
                         if (!scope.isItemSelected(item) && value !== null) { // in the case if we want to add a new item
+
+                            // if we already reached the limit of selection
+                            if (model.length >= scope.selectionLimit)
+                                return;
+
                             if (angular.isDefined(scope.modelInsertPosition))
-                                model.splice(scope.modelInsertPosition, 0, item);
+                                model.splice(scope.modelInsertPosition, 0, value);
                             else
                                 model.push(value);
 
@@ -339,6 +351,11 @@
                     }
 
                     ngModelCtrl.$setViewValue(model);
+                    if (attrs.onChange) {
+                        $timeout(function() {
+                            selectOptionsCtrl.applyOnScope(attrs.onChange);
+                        })
+                    }
 
                     // tell others that use selected item
                     var eventData = { item: item, isMultiselect: scope.multiselect, isNewSelection: newSelection, index: index };
@@ -500,8 +517,11 @@
                         scope.selectItem(displayedItems[0]);
                 }
 
-                if (scope.loadPromise)
-                    loadItems(scope.loadPromise);
+                // watch for load promise and load items when its changed
+                scope.$watch('loadPromise', function(loadPromise) {
+                    if (!loadPromise) return;
+                    loadItems(loadPromise);
+                });
             }
         };
     }

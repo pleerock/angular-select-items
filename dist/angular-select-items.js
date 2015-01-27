@@ -14,7 +14,7 @@
     angular.module('selectItems', ['selectOptions', 'disableAll', 'ngSanitize']);
 
 })();
-angular.module("selectItems").run(["$templateCache", function($templateCache) {$templateCache.put("select-items.html","<div class=\"select-items\"\n     ng-show=\"search\n            || (loadingInProgress && loadingLabel)\n            || (multiselect && selectAll && getDisplayedItems().length > 0)\n            || (!multiselect && !autoSelect && !hideNoSelection && noSelectionLabel)\n            || getDisplayedItems().length > 0\"\n        disable-all=\"disabled\">\n    <ul>\n        <li ng-show=\"loadingInProgress\">{{ loadingLabel }}</li>\n        <li ng-show=\"search && !loadingInProgress\" class=\"select-items-search\">\n            <input ng-model=\"searchKeyword\" ng-attr-placeholder=\"{{ searchPlaceholder }}\">\n        </li>\n        <li class=\"select-all\"\n            ng-class=\"{ \'can-be-active\' : activeItem === null }\"\n            ng-show=\"multiselect && selectAll && getDisplayedItems().length > 0\"\n            ng-mouseover=\"setActiveItem(null)\"\n            ng-click=\"toggleAllItemsSelection()\">\n            <input ng-show=\"!hideControls\" type=\"checkbox\" ng-checked=\"areAllItemsSelected()\">\n            <span class=\"select-all\">{{ areAllItemsSelected() ? deselectAllLabel : selectAllLabel }}</span>\n        </li>\n        <li ng-show=\"!multiselect && !autoSelect && !hideNoSelection && noSelectionLabel\"\n            ng-click=\"selectItem()\"\n            ng-mouseover=\"setActiveItem(null)\"\n            ng-class=\"{ \'active\' : !activeItem }\"\n            class=\"no-selection\">\n            <input ng-show=\"!hideControls\" type=\"radio\" ng-checked=\"!isAnyItemSelected()\"> {{ noSelectionLabel }}\n        </li>\n        <li ng-repeat=\"item in getDisplayedItems()\"\n            class=\"select-item\">\n            <div class=\"select-item-container\">\n                <div class=\"select-items-group\"\n                     ng-show=\"($index === 0 || getItemGroup(item) !== getItemGroupOfItemsAt($index - 1)) && getItemGroup(item)\"\n                     ng-click=\"toggleGroupItemsSelection(item)\">\n                    <input class=\"item-control\"\n                           ng-show=\"groupSelectAll\"\n                           type=\"checkbox\"\n                           ng-checked=\"areAllGroupItemsSelected(item)\">\n                    <span class=\"select-item-group-template\" ng-bind-html=\"getItemGroup(item)\"></span>\n                </div>\n                <div ng-mouseover=\"setActiveItem(item)\"\n                     ng-click=\"selectItem(item)\"\n                     ng-class=\"{ \'active\' : activeItem === item, \'selected\': isItemSelected(item) }\">\n                    <input class=\"item-control\"\n                           ng-show=\"!hideControls\"\n                           ng-attr-type=\"{{ multiselect ? \'checkbox\' : \'radio\' }}\"\n                           ng-checked=\"isItemSelected(item)\">\n                    <span class=\"select-item-template\" ng-bind-html=\"getItemName(item)\"></span>\n                </div>\n            </div>\n        </li>\n    </ul>\n</div>");}]);
+angular.module("selectItems").run(["$templateCache", function($templateCache) {$templateCache.put("select-items.html","<div class=\"select-items\"\n     ng-show=\"search\n            || (loadingInProgress && loadingLabel)\n            || (multiselect && selectAll && getDisplayedItems().length > 0)\n            || (!multiselect && !autoSelect && !hideNoSelection && noSelectionLabel)\n            || getDisplayedItems().length > 0\"\n        disable-all=\"disabled\">\n    <ul>\n        <li ng-show=\"loadingInProgress\" class=\"select-list-item\">{{ loadingLabel }}</li>\n        <li ng-show=\"search && !loadingInProgress\" class=\"select-items-search select-list-item\">\n            <input ng-model=\"searchKeyword\" ng-attr-placeholder=\"{{ searchPlaceholder }}\">\n        </li>\n        <li class=\"select-all select-list-item\"\n            ng-class=\"{ \'can-be-active\' : activeItem === null }\"\n            ng-show=\"multiselect && selectAll && getDisplayedItems().length > 0\"\n            ng-mouseover=\"setActiveItem(null)\"\n            ng-click=\"toggleAllItemsSelection()\">\n            <input ng-show=\"!hideControls\" type=\"checkbox\" ng-checked=\"areAllItemsSelected()\">\n            <span class=\"select-all\">{{ areAllItemsSelected() ? deselectAllLabel : selectAllLabel }}</span>\n        </li>\n        <li ng-show=\"!multiselect && !autoSelect && !hideNoSelection && noSelectionLabel\"\n            ng-click=\"selectItem()\"\n            ng-mouseover=\"setActiveItem(null)\"\n            ng-class=\"{ \'active\' : !activeItem }\"\n            class=\"no-selection select-list-item\">\n            <input ng-show=\"!hideControls\" type=\"radio\" ng-checked=\"!isAnyItemSelected()\"> {{ noSelectionLabel }}\n        </li>\n        <li ng-repeat=\"item in getDisplayedItems()\"\n            class=\"select-item\">\n            <div class=\"select-item-container\">\n                <div class=\"select-list-item select-items-group\"\n                     ng-class=\"{ \'all-selected\': areAllGroupItemsSelected(item), \'select-all-enabled\': groupSelectAll }\"\n                     ng-mouseover=\"setActiveItem(null)\"\n                     ng-show=\"($index === 0 || getItemGroup(item) !== getItemGroupOfItemsAt($index - 1)) && getItemGroup(item)\"\n                     ng-click=\"toggleGroupItemsSelection(item)\">\n                    <input class=\"item-control\"\n                           ng-show=\"groupSelectAll\"\n                           type=\"checkbox\"\n                           ng-checked=\"areAllGroupItemsSelected(item)\">\n                    <span class=\"select-item-group-template\" ng-bind-html=\"getItemGroup(item)\"></span>\n                </div>\n                <div class=\"select-list-item\"\n                     ng-mouseover=\"setActiveItem(item)\"\n                     ng-click=\"selectItem(item)\"\n                     ng-class=\"{ \'active\' : activeItem === item, \'selected\': isItemSelected(item) }\">\n                    <input class=\"item-control\"\n                           ng-show=\"!hideControls\"\n                           ng-attr-type=\"{{ multiselect ? \'checkbox\' : \'radio\' }}\"\n                           ng-disabled=\"selectionLimit > 0 && ngModel.length >= selectionLimit && !isItemSelected(item)\"\n                           ng-checked=\"isItemSelected(item)\">\n                    <span class=\"select-item-template\" ng-bind-html=\"getItemName(item)\"></span>\n                </div>\n            </div>\n        </li>\n    </ul>\n</div>");}]);
 /**
  * @author Umed Khudoiberdiev <info@zar.tj>
  */
@@ -65,7 +65,7 @@ angular.module("selectItems").run(["$templateCache", function($templateCache) {$
         deselectAllLabel: 'Deselect all',
         noSelectionLabel: 'Nothing is selected',
         loadingLabel: '',
-        loadMinQueryLength: 1,
+        loadMinQueryLength: 3,
         loadDelay: 300,
         showLimit: null
     });
@@ -86,11 +86,15 @@ angular.module("selectItems").run(["$templateCache", function($templateCache) {$
      * This directive provides a ability to select items from the given list to the given model.
      * Supports both multiple and single select modes.
      *
+     * @param {expression} ngModel Model that will be changed
+     * @param {expression} onChange Expression to be evaluated when model is changed
+     * @param {expression} selectOptions Options to be parsed and used for items data source and other options
      * @param {boolean} disabled If set to true then all interactions with the component will be disabled
      * @param {boolean} multiselect If set to true then user can select multiple options from the list of items. In this
      *                              case ng-model will be an array. If set to false then user can select only one option
      *                              from the list of items. In this case ng-model will not be array
      * @param {number} showLimit Maximal number of items to show in the list
+     * @param {number} selectionLimit Maximal number of items that are allowed to be selected
      * @param {boolean} search If set to true, then search input will be shown to the user, where he can peform a search
      *                          in the list of items
      * @param {Function} searchFilter Filter that controls the result of the search input
@@ -138,9 +142,11 @@ angular.module("selectItems").run(["$templateCache", function($templateCache) {$
 
         return {
             scope: {
+                ngModel: '=',
                 disabled: '=?',
                 multiselect: '=?',
                 showLimit: '=?',
+                selectionLimit: '=?',
                 search: '=?',
                 searchFilter: '=?',
                 searchKeyword: '=?',
@@ -169,7 +175,7 @@ angular.module("selectItems").run(["$templateCache", function($templateCache) {$
             require: ['ngModel', 'selectOptions'],
             template: function(element) {
                 var html = element.html().trim();
-                if (html) return '<div>' + html + '</div>';
+                if (html) return '<div class="select-items">' + html + '</div>';
                 return $templateCache.get('select-items.html');
             },
             link: function (scope, element, attrs, controllers) {
@@ -184,7 +190,7 @@ angular.module("selectItems").run(["$templateCache", function($templateCache) {$
                 scope.deselectAllLabel              = scope.deselectAllLabel  || selectItemsConfiguration.deselectAllLabel;
                 scope.noSelectionLabel              = scope.noSelectionLabel  || selectItemsConfiguration.noSelectionLabel;
                 scope.loadingLabel                  = scope.loadingLabel      || selectItemsConfiguration.loadingLabel;
-                scope.loadByKeywordMinQueryLength   = scope.loadByKeywordMinQueryLength ? parseInt(attrs.loadByKeywordMinQueryLength) : selectItemsConfiguration.loadByKeywordMinQueryLength;
+                scope.loadByKeywordMinQueryLength   = attrs.loadByKeywordMinQueryLength ? parseInt(attrs.loadByKeywordMinQueryLength) : selectItemsConfiguration.loadMinQueryLength;
                 scope.loadByKeywordDelay            = scope.loadByKeywordDelay ? parseInt(attrs.loadByKeywordDelay) : selectItemsConfiguration.loadByKeywordDelay;
 
                 // ---------------------------------------------------------------------
@@ -388,6 +394,7 @@ angular.module("selectItems").run(["$templateCache", function($templateCache) {$
                  * @param {object} item
                  */
                 scope.selectItem = function(item) {
+
                     var value = selectOptionsCtrl.parseItemValue(item);
                     var newSelection = false;
                     var index = null;
@@ -398,8 +405,13 @@ angular.module("selectItems").run(["$templateCache", function($templateCache) {$
                         model = ngModelCtrl.$modelValue || [];
 
                         if (!scope.isItemSelected(item) && value !== null) { // in the case if we want to add a new item
+
+                            // if we already reached the limit of selection
+                            if (model.length >= scope.selectionLimit)
+                                return;
+
                             if (angular.isDefined(scope.modelInsertPosition))
-                                model.splice(scope.modelInsertPosition, 0, item);
+                                model.splice(scope.modelInsertPosition, 0, value);
                             else
                                 model.push(value);
 
@@ -413,6 +425,11 @@ angular.module("selectItems").run(["$templateCache", function($templateCache) {$
                     }
 
                     ngModelCtrl.$setViewValue(model);
+                    if (attrs.onChange) {
+                        $timeout(function() {
+                            selectOptionsCtrl.applyOnScope(attrs.onChange);
+                        })
+                    }
 
                     // tell others that use selected item
                     var eventData = { item: item, isMultiselect: scope.multiselect, isNewSelection: newSelection, index: index };
@@ -574,8 +591,11 @@ angular.module("selectItems").run(["$templateCache", function($templateCache) {$
                         scope.selectItem(displayedItems[0]);
                 }
 
-                if (scope.loadPromise)
-                    loadItems(scope.loadPromise);
+                // watch for load promise and load items when its changed
+                scope.$watch('loadPromise', function(loadPromise) {
+                    if (!loadPromise) return;
+                    loadItems(loadPromise);
+                });
             }
         };
     }

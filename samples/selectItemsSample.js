@@ -113,7 +113,7 @@
 
         /**
          * A callback that will be called when search is performed in the select-tags component.
-         * Search will be performed by a given keyword. Must return a promise.
+         * Must return a promise.
          *
          * @returns {*}
          */

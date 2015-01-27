@@ -16,7 +16,7 @@
         deselectAllLabel: 'Deselect all',
         noSelectionLabel: 'Nothing is selected',
         loadingLabel: '',
-        loadMinQueryLength: 1,
+        loadMinQueryLength: 3,
         loadDelay: 300,
         showLimit: null
     });

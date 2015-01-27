@@ -122,6 +122,20 @@
 
     <!-- =================================================================== -->
 
+    <h1>Select item with limited numbers of items that can be selected <i>only multiselect</i></h1>
+
+    <select-items select-options="user.name for user in users"
+                  multiselect="true"
+                  selection-limit="3"
+                  ng-model="selectedUsers">
+    </select-items>
+
+    <br/>
+    Selected users are: <b ng-repeat="selectedUser in selectedUsers">{{ selectedUser.name }} </b><br/>
+    Model: <small>{{ selectedUsers }}</small><br/>
+
+    <!-- =================================================================== -->
+
     <h1>Grouped elements: <i>only multiselect</i></h1>
 
     <select-items select-options="user.name for user in users group by user.group"
@@ -314,11 +328,11 @@
 
     <!-- =================================================================== -->
 
-    <h1>Using ng-change to run a callback when model is changing</h1>
+    <h1>Using on-change to run a callback when model is changing</h1>
 
     <select-items select-options="user.name for user in users"
                   ng-model="selectedUser"
-                  ng-change="changed(selectedUser)"
+                  on-change="changed(selectedUser)"
                   select-all="true"
                   search="true"
                   search-placeholder="TYPE HERE TO SEARCH"

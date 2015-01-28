@@ -14,7 +14,7 @@
     angular.module('selectItems', ['selectOptions', 'disableAll', 'ngSanitize']);
 
 })();
-angular.module("selectItems").run(["$templateCache", function($templateCache) {$templateCache.put("select-items.html","<div class=\"select-items\"\n     ng-show=\"search\n            || (loadingInProgress && loadingLabel)\n            || (multiselect && selectAll && getDisplayedItems().length > 0)\n            || (!multiselect && !autoSelect && !hideNoSelection && noSelectionLabel)\n            || getDisplayedItems().length > 0\"\n        disable-all=\"disabled\">\n    <ul>\n        <li ng-show=\"loadingInProgress\" class=\"select-list-item\">{{ loadingLabel }}</li>\n        <li ng-show=\"search && !loadingInProgress\" class=\"select-items-search select-list-item\">\n            <input ng-model=\"searchKeyword\" ng-attr-placeholder=\"{{ searchPlaceholder }}\">\n        </li>\n        <li class=\"select-all select-list-item\"\n            ng-class=\"{ \'can-be-active\' : activeItem === null }\"\n            ng-show=\"multiselect && selectAll && getDisplayedItems().length > 0\"\n            ng-mouseover=\"setActiveItem(null)\"\n            ng-click=\"toggleAllItemsSelection()\">\n            <input ng-show=\"!hideControls\" type=\"checkbox\" ng-checked=\"areAllItemsSelected()\">\n            <span class=\"select-all\">{{ areAllItemsSelected() ? deselectAllLabel : selectAllLabel }}</span>\n        </li>\n        <li ng-show=\"!multiselect && !autoSelect && !hideNoSelection && noSelectionLabel\"\n            ng-click=\"selectItem()\"\n            ng-mouseover=\"setActiveItem(null)\"\n            ng-class=\"{ \'active\' : !activeItem }\"\n            class=\"no-selection select-list-item\">\n            <input ng-show=\"!hideControls\" type=\"radio\" ng-checked=\"!isAnyItemSelected()\"> {{ noSelectionLabel }}\n        </li>\n        <li ng-repeat=\"item in getDisplayedItems()\"\n            class=\"select-item\">\n            <div class=\"select-item-container\">\n                <div class=\"select-list-item select-items-group\"\n                     ng-class=\"{ \'all-selected\': areAllGroupItemsSelected(item), \'select-all-enabled\': groupSelectAll }\"\n                     ng-mouseover=\"setActiveItem(null)\"\n                     ng-show=\"($index === 0 || getItemGroup(item) !== getItemGroupOfItemsAt($index - 1)) && getItemGroup(item)\"\n                     ng-click=\"toggleGroupItemsSelection(item)\">\n                    <input class=\"item-control\"\n                           ng-show=\"groupSelectAll\"\n                           type=\"checkbox\"\n                           ng-checked=\"areAllGroupItemsSelected(item)\">\n                    <span class=\"select-item-group-template\" ng-bind-html=\"getItemGroup(item)\"></span>\n                </div>\n                <div class=\"select-list-item\"\n                     ng-mouseover=\"setActiveItem(item)\"\n                     ng-click=\"selectItem(item)\"\n                     ng-class=\"{ \'active\' : activeItem === item, \'selected\': isItemSelected(item) }\">\n                    <input class=\"item-control\"\n                           ng-show=\"!hideControls\"\n                           ng-attr-type=\"{{ multiselect ? \'checkbox\' : \'radio\' }}\"\n                           ng-disabled=\"selectionLimit > 0 && ngModel.length >= selectionLimit && !isItemSelected(item)\"\n                           ng-checked=\"isItemSelected(item)\">\n                    <span class=\"select-item-template\" ng-bind-html=\"getItemName(item)\"></span>\n                </div>\n            </div>\n        </li>\n    </ul>\n</div>");}]);
+angular.module("selectItems").run(["$templateCache", function($templateCache) {$templateCache.put("select-items.html","<div class=\"select-items\"\n     ng-show=\"search\n            || (loadingInProgress && loadingLabel)\n            || (multiselect && selectAll && getDisplayedItems().length > 0)\n            || (!multiselect && !autoSelect && !hideNoSelection && noSelectionLabel)\n            || getDisplayedItems().length > 0\"\n        disable-all=\"disabled\"> <!-- todo: try to cache displayed items length -->\n    <ul>\n        <li ng-show=\"loadingInProgress\" class=\"select-list-item\">{{ loadingLabel }}</li>\n        <li ng-show=\"search && !loadingInProgress\" class=\"select-items-search select-list-item\">\n            <input ng-model=\"searchKeyword\" ng-attr-placeholder=\"{{ searchPlaceholder }}\">\n        </li>\n        <li class=\"select-all select-list-item\"\n            ng-class=\"{ \'can-be-active\' : activeItem === null }\"\n            ng-show=\"multiselect && selectAll && getDisplayedItems().length > 0\"\n            ng-mouseover=\"setActiveItem(null)\"\n            ng-click=\"toggleAllItemsSelection()\">\n            <input ng-show=\"!hideControls\" type=\"checkbox\" ng-checked=\"areAllItemsSelected()\">\n            <span class=\"select-all\">{{ areAllItemsSelected() ? deselectAllLabel : selectAllLabel }}</span>\n        </li>\n        <li ng-show=\"!multiselect && !autoSelect && !hideNoSelection && noSelectionLabel && getDisplayedItems().length > 0\"\n            ng-click=\"selectItem()\"\n            ng-mouseover=\"setActiveItem(null)\"\n            ng-class=\"{ \'active\' : !activeItem }\"\n            class=\"no-selection select-list-item\">\n            <input ng-show=\"!hideControls\" type=\"radio\" ng-checked=\"!isAnyItemSelected()\"> {{ noSelectionLabel }}\n        </li>\n        <li ng-repeat=\"item in getDisplayedItems()\"\n            class=\"select-item\">\n            <div class=\"select-item-container\">\n                <div class=\"select-list-item select-items-group\"\n                     ng-class=\"{ \'all-selected\': areAllGroupItemsSelected(item), \'select-all-enabled\': groupSelectAll }\"\n                     ng-mouseover=\"setActiveItem(null)\"\n                     ng-show=\"($index === 0 || getItemGroup(item) !== getItemGroupOfItemsAt($index - 1)) && getItemGroup(item)\"\n                     ng-click=\"toggleGroupItemsSelection(item)\">\n                    <input class=\"item-control\"\n                           ng-show=\"groupSelectAll\"\n                           type=\"checkbox\"\n                           ng-checked=\"areAllGroupItemsSelected(item)\">\n                    <span class=\"select-item-group-template\" ng-bind-html=\"getItemGroup(item)\"></span>\n                </div>\n                <div class=\"select-list-item\"\n                     ng-mouseover=\"setActiveItem(item)\"\n                     ng-click=\"selectItem(item)\"\n                     ng-class=\"{ \'active\' : activeItem === item, \'selected\': isItemSelected(item) }\">\n                    <input class=\"item-control\"\n                           ng-show=\"!hideControls\"\n                           ng-attr-type=\"{{ multiselect ? \'checkbox\' : \'radio\' }}\"\n                           ng-disabled=\"selectionLimit > 0 && ngModel.length >= selectionLimit && !isItemSelected(item)\"\n                           ng-checked=\"isItemSelected(item)\">\n                    <span class=\"select-item-template\" ng-bind-html=\"getItemName(item)\"></span>\n                </div>\n            </div>\n        </li>\n    </ul>\n</div>");}]);
 /**
  * @author Umed Khudoiberdiev <info@zar.tj>
  */
@@ -135,11 +135,15 @@ angular.module("selectItems").run(["$templateCache", function($templateCache) {$
     angular.module('selectItems').directive('selectItems', selectItems);
 
     /**
+     * @ngdoc controller
+     * @name SelectItemsCtrl
+     */
+    angular.module('selectItems').controller('SelectItemsCtrl', SelectItemsCtrl);
+
+    /**
      * @ngInject
      */
-    function selectItems($timeout, $templateCache, selectItemsConfiguration, SelectItemsActiveItemNavigator,
-                         orderByFilter, filterFilter, selectItemsHighlightWordFilter) {
-
+    function selectItems($templateCache) {
         return {
             scope: {
                 ngModel: '=',
@@ -173,431 +177,443 @@ angular.module("selectItems").run(["$templateCache", function($templateCache) {$
             replace: true,
             restrict: 'E',
             require: ['ngModel', 'selectOptions'],
+            controller: 'SelectItemsCtrl',
             template: function(element) {
                 var html = element.html().trim();
                 if (html) return '<div class="select-items">' + html + '</div>';
                 return $templateCache.get('select-items.html');
-            },
-            link: function (scope, element, attrs, controllers) {
-
-                // ---------------------------------------------------------------------
-                // Scope variables
-                // ---------------------------------------------------------------------
-
-                scope.showLimit                     = scope.showLimit          ? parseInt(scope.showLimit) : selectItemsConfiguration.showLimit;
-                scope.searchPlaceholder             = scope.searchPlaceholder || selectItemsConfiguration.searchPlaceholder;
-                scope.selectAllLabel                = scope.selectAllLabel    || selectItemsConfiguration.selectAllLabel;
-                scope.deselectAllLabel              = scope.deselectAllLabel  || selectItemsConfiguration.deselectAllLabel;
-                scope.noSelectionLabel              = scope.noSelectionLabel  || selectItemsConfiguration.noSelectionLabel;
-                scope.loadingLabel                  = scope.loadingLabel      || selectItemsConfiguration.loadingLabel;
-                scope.loadByKeywordMinQueryLength   = attrs.loadByKeywordMinQueryLength ? parseInt(attrs.loadByKeywordMinQueryLength) : selectItemsConfiguration.loadMinQueryLength;
-                scope.loadByKeywordDelay            = scope.loadByKeywordDelay ? parseInt(attrs.loadByKeywordDelay) : selectItemsConfiguration.loadByKeywordDelay;
-
-                // ---------------------------------------------------------------------
-                // Local variables
-                // ---------------------------------------------------------------------
-
-                var ngModelCtrl        = controllers[0];
-                var selectOptionsCtrl  = controllers[1];
-                var loadTimeoutPromise = null;
-                var loadedItems        = [];
-
-                // ---------------------------------------------------------------------
-                // Local functions
-                // ---------------------------------------------------------------------
-
-                /**
-                 * Loads items (usually from the remote server). Load callback must return a promise
-                 * to get the target object.
-                 *
-                 * @param {*} loadPromise Load callback that must return promise
-                 * @param {*} [value] Value to be sent to the promise object.
-                 */
-                var loadItems = function(loadPromise, value) {
-                    scope.loadingInProgress = true;
-                    loadedItems = [];
-                    loadPromise(value).then(function(response) {
-                        if (response.data && angular.isArray(response.data))
-                            loadedItems = response.data;
-                        scope.loadingInProgress = false;
-
-                    }, function(error) {
-                        scope.loadingInProgress = false;
-                        throw error;
-                    });
-                };
-
-                // ---------------------------------------------------------------------
-                // Scope functions
-                // ---------------------------------------------------------------------
-
-                /**
-                 * Gets the item name that will be used to display in the list.
-                 *
-                 * @param {Object} item
-                 * @returns {string}
-                 */
-                scope.getItemGroup = function(item) {
-                    var value = selectOptionsCtrl.parseItemGroup(item);
-                    if (value)
-                        value = String(value).replace(/<[^>]+>/gm, ''); // strip html from the data here
-
-                    return scope.groupDecorator ? scope.groupDecorator(item) : value;
-                };
-
-                /**
-                 * Gets the group of the item on specific position of the displayed items.
-                 *
-                 * @param {number} index
-                 * @returns {string}
-                 */
-                scope.getItemGroupOfItemsAt = function(index) {
-                    return scope.getItemGroup(scope.getDisplayedItems()[index]);
-                };
-
-                /**
-                 * Gets the item name that will be used to display in the list.
-                 *
-                 * @param {Object} item
-                 * @returns {string}
-                 */
-                scope.getItemName = function(item) {
-                    var value = selectOptionsCtrl.parseItemName(item);
-                    value = String(value).replace(/<[^>]+>/gm, ''); // strip html from the data here
-                    return scope.decorator ? scope.decorator(item) : selectItemsHighlightWordFilter(value, scope.searchKeyword);
-                };
-
-                /**
-                 * Gets the items that will be used as an options for the model.
-                 *
-                 * @returns {Object[]}
-                 */
-                scope.getItems = function() {
-                    var items = selectOptionsCtrl.parseItems() || [];
-
-                    // append loaded items if they exists
-                    if (loadedItems.length > 0)
-                        items = items.concat(loadedItems);
-
-                    // apply custom user filters to the items
-                    if (scope.filters)
-                        angular.forEach(scope.filters, function(filter) {
-                            items = filter(items);
-                        });
-
-                    // limit number of items if necessary
-                    if (scope.showLimit && items.length > scope.showLimit)
-                        items = items.slice(0, scope.showLimit);
-
-                    return items;
-                };
-
-                /**
-                 * Gets the items that will be shown in the list.
-                 * What it does it appends  | orderBy: orderProperty | filter: itemSearch
-                 * to the #getItems method, but in js-code level to get the list of real displayed items.
-                 *
-                 * @returns {Object[]}
-                 */
-                scope.getDisplayedItems = function() {
-                    var items = scope.getItems();
-                    if (scope.searchKeyword)
-                        items = filterFilter(items, scope.searchKeyword, scope.searchFilter);
-                    if (selectOptionsCtrl.getOrderBy())
-                        items = orderByFilter(items, selectOptionsCtrl.getOrderBy());
-                    if (selectOptionsCtrl.getGroupBy())
-                        items = orderByFilter(items, selectOptionsCtrl.getGroupByWithoutPrefixes());
-
-                    return items;
-                };
-
-                /**
-                 * Checks if given item is selected.
-                 *
-                 * @param {object} item
-                 * @returns {boolean}
-                 */
-                scope.isItemSelected = function(item) {
-                    var model = ngModelCtrl.$modelValue;
-                    var value = selectOptionsCtrl.parseItemValue(item);
-                    var trackByProperty = selectOptionsCtrl.getTrackBy();
-                    var trackByValue    = selectOptionsCtrl.parseTrackBy(item);
-
-                    // if no tracking specified simple compare object in the model
-                    if (!trackByProperty || !trackByValue)
-                        return scope.multiselect ? (model && model.indexOf(value) !== -1) : model === value;
-
-                    // if tracking is specified then searching is more complex
-                    if (scope.multiselect) {
-                        var isFound = false;
-                        angular.forEach(model, function(m) {
-                            if (m[trackByProperty] === trackByValue)
-                                isFound = true;
-                        });
-                        return isFound;
-                    }
-
-                    return model[trackByProperty] === trackByValue;
-                };
-
-                /**
-                 * Checks if any item is selected.
-                 *
-                 * @param {*} item
-                 */
-                scope.areAllGroupItemsSelected = function(item) {
-                    if (!scope.multiselect) return;
-
-                    var displayedItems = scope.getDisplayedItems();
-                    var itemGroup = scope.getItemGroup(item);
-                    var isAnyNotSelected = false;
-
-                    angular.forEach(displayedItems, function(displayedItem) {
-                        if (itemGroup === scope.getItemGroup(displayedItem))
-                            isAnyNotSelected = isAnyNotSelected || !scope.isItemSelected(displayedItem);
-                    });
-
-                    return isAnyNotSelected === false;
-                };
-
-                /**
-                 * Checks if any item is selected.
-                 *
-                 * @returns {boolean}
-                 */
-                scope.isAnyItemSelected = function() {
-                    if (scope.multiselect)
-                        return ngModelCtrl.$modelValue && ngModelCtrl.$modelValue.length > 0;
-
-                    return ngModelCtrl.$modelValue ? true : false;
-                };
-
-                /**
-                 * Checks if all items are selected or not.
-                 *
-                 * @returns {boolean}
-                 */
-                scope.areAllItemsSelected = function() {
-                    var items = scope.getDisplayedItems();
-                    var isAnyNotSelected = false;
-
-                    angular.forEach(items, function(item) {
-                        isAnyNotSelected = isAnyNotSelected || !scope.isItemSelected(item);
-                    });
-
-                    return isAnyNotSelected === false;
-                };
-
-                /**
-                 * Selects a given item.
-                 *
-                 * @param {object} item
-                 */
-                scope.selectItem = function(item) {
-
-                    var value = selectOptionsCtrl.parseItemValue(item);
-                    var newSelection = false;
-                    var index = null;
-
-                    // if simple, not multiple mode then
-                    var model = value;
-                    if (scope.multiselect) { // otherwise dealing with multiple model
-                        model = ngModelCtrl.$modelValue || [];
-
-                        if (!scope.isItemSelected(item) && value !== null) { // in the case if we want to add a new item
-
-                            // if we already reached the limit of selection
-                            if (model.length >= scope.selectionLimit)
-                                return;
-
-                            if (angular.isDefined(scope.modelInsertPosition))
-                                model.splice(scope.modelInsertPosition, 0, value);
-                            else
-                                model.push(value);
-
-                            index = scope.modelInsertPosition;
-                            newSelection = true;
-
-                        } else { // in the case if we want to remove item from the model
-                            var itemInModel = selectOptionsCtrl.findItemInModel(item, model); // this way we find a real matched item from the model
-                            model.splice(model.indexOf(itemInModel), 1); // find its index in the model and remove it
-                        }
-                    }
-
-                    ngModelCtrl.$setViewValue(model);
-                    if (attrs.onChange) {
-                        $timeout(function() {
-                            selectOptionsCtrl.applyOnScope(attrs.onChange);
-                        })
-                    }
-
-                    // tell others that use selected item
-                    var eventData = { item: item, isMultiselect: scope.multiselect, isNewSelection: newSelection, index: index };
-                    scope.$emit('select-items.item_selected', eventData);
-                };
-
-                /**
-                 * Selects all items in the list.
-                 */
-                scope.selectAllItems = function() {
-                    if (!scope.multiselect) return;
-
-                    var items = scope.getDisplayedItems();
-                    angular.forEach(items, function(item) {
-                        if (!scope.isItemSelected(item))
-                            scope.selectItem(item);
-                    });
-                };
-
-                /**
-                 * Deselects all items in the list.
-                 */
-                scope.deselectAllItems = function() {
-                    if (!scope.multiselect) return;
-
-                    var items = scope.getDisplayedItems();
-                    angular.forEach(items, function(item) {
-                        if (scope.isItemSelected(item))
-                            scope.selectItem(item);
-                    });
-                };
-
-                /**
-                 * Toggles all items selection state - if items are selected,
-                 * then it deselects them, if items are not selected - then selects them.
-                 */
-                scope.toggleAllItemsSelection = function() {
-                    if (scope.areAllItemsSelected())
-                        scope.deselectAllItems();
-                    else
-                        scope.selectAllItems();
-                };
-
-                /**
-                 * Selects all items in the given item group.
-                 *
-                 * @param {*} item
-                 */
-                scope.selectGroupItems = function(item) {
-                    if (!scope.multiselect || !scope.groupSelectAll) return;
-
-                    var itemGroup = scope.getItemGroup(item);
-                    var displayedItems = scope.getDisplayedItems();
-
-                    angular.forEach(displayedItems, function(displayedItem) {
-                        if (itemGroup === scope.getItemGroup(displayedItem) && !scope.isItemSelected(displayedItem))
-                            scope.selectItem(displayedItem);
-                    });
-                };
-
-                /**
-                 * Deselects all items in the list.
-                 *
-                 * @param {*} item
-                 */
-                scope.deselectGroupItems = function(item) {
-                    if (!scope.multiselect || !scope.groupSelectAll) return;
-
-                    var itemGroup = scope.getItemGroup(item);
-                    var displayedItems = scope.getDisplayedItems();
-
-                    angular.forEach(displayedItems, function(displayedItem) {
-                        if (itemGroup === scope.getItemGroup(displayedItem) && scope.isItemSelected(displayedItem))
-                            scope.selectItem(displayedItem);
-                    });
-                };
-
-                /**
-                 * Toggles items of the given item's group selection state - if items are selected,
-                 * then it deselects them, if items are not selected - then selects them.
-                 *
-                 * @param {*} item
-                 */
-                scope.toggleGroupItemsSelection = function(item) {
-                    if (!scope.multiselect || !scope.groupSelectAll) return;
-
-                    if (scope.areAllGroupItemsSelected(item))
-                        scope.deselectGroupItems(item);
-                    else
-                        scope.selectGroupItems(item);
-                };
-
-                /**
-                 * Sets a given item as active.
-                 *
-                 * @param {object} item
-                 */
-                scope.setActiveItem = function(item) {
-                    scope.activeItem = item;
-                };
-
-                // ---------------------------------------------------------------------
-                // Watchers
-                // ---------------------------------------------------------------------
-
-                if (scope.loadByKeywordPromise) {
-                    scope.$watch('searchKeyword', function(keyword) {
-                        if (scope.loadByKeywordPromise && keyword && keyword.length >= scope.loadByKeywordMinQueryLength) {
-                            if (loadTimeoutPromise !== null)
-                                $timeout.cancel(loadTimeoutPromise);
-
-                            loadTimeoutPromise = $timeout(function() { loadItems(scope.loadByKeywordPromise, keyword); }, scope.loadByKeywordDelay);
-                        }
-                    });
-                }
-
-                // ---------------------------------------------------------------------
-                // Event listeners
-                // ---------------------------------------------------------------------
-
-                // when this event comes it makes active a next item in the list of displayed items as active
-                scope.$on('select-items.active_next', function() {
-                    var activeItem = SelectItemsActiveItemNavigator.previous(scope.getDisplayedItems(), scope.activeItem);
-                    if (activeItem || !scope.multiselect) {
-                        scope.activeItem = activeItem;
-                    }
-                });
-
-                // when this event comes it makes active a previous item in the list of displayed items
-                scope.$on('select-items.active_previous', function() {
-                    scope.activeItem = SelectItemsActiveItemNavigator.next(scope.getDisplayedItems(), scope.activeItem);
-                });
-
-                // when this event comes it selects (adds to the model) a currently active item
-                scope.$on('select-items.select_active', function(event) {
-                    var displayedItems = scope.getDisplayedItems();
-                    if (displayedItems.length > 0 && displayedItems.indexOf(scope.activeItem) !== -1) {
-                        scope.selectItem(scope.activeItem);
-                        event.isItemSelected = true;
-                    } else {
-                        event.isItemSelected = false;
-                    }
-                });
-
-                // cleanup after directive and its scope is destroyed
-                scope.$on('$destroy', function() {
-                    if (loadTimeoutPromise)
-                        $timeout.cancel(loadTimeoutPromise);
-                });
-
-                // ---------------------------------------------------------------------
-                // Initialization
-                // ---------------------------------------------------------------------
-
-                // if auto-select option is given then auto select first item in the displayed list of items
-                if (scope.autoSelect) {
-                    var displayedItems = scope.getDisplayedItems();
-                    if (displayedItems.length > 0)
-                        scope.selectItem(displayedItems[0]);
-                }
-
-                // watch for load promise and load items when its changed
-                scope.$watch('loadPromise', function(loadPromise) {
-                    if (!loadPromise) return;
-                    loadItems(loadPromise);
-                });
             }
         };
+    }
+
+    /**
+     * @ngInject
+     */
+    function SelectItemsCtrl($scope, $element, $attrs, $timeout, orderByFilter, filterFilter, selectItemsConfiguration,
+                             SelectItemsActiveItemNavigator, selectItemsHighlightWordFilter) {
+
+        // ---------------------------------------------------------------------
+        // Scope variables
+        // ---------------------------------------------------------------------
+
+        $scope.showLimit                     = $scope.showLimit          ? parseInt($scope.showLimit) : selectItemsConfiguration.showLimit;
+        $scope.searchPlaceholder             = $scope.searchPlaceholder || selectItemsConfiguration.searchPlaceholder;
+        $scope.selectAllLabel                = $scope.selectAllLabel    || selectItemsConfiguration.selectAllLabel;
+        $scope.deselectAllLabel              = $scope.deselectAllLabel  || selectItemsConfiguration.deselectAllLabel;
+        $scope.noSelectionLabel              = $scope.noSelectionLabel  || selectItemsConfiguration.noSelectionLabel;
+        $scope.loadingLabel                  = $scope.loadingLabel      || selectItemsConfiguration.loadingLabel;
+        $scope.loadByKeywordMinQueryLength   = $attrs.loadByKeywordMinQueryLength ? parseInt($attrs.loadByKeywordMinQueryLength) : selectItemsConfiguration.loadMinQueryLength;
+        $scope.loadByKeywordDelay            = $scope.loadByKeywordDelay ? parseInt($attrs.loadByKeywordDelay) : selectItemsConfiguration.loadByKeywordDelay;
+
+        // ---------------------------------------------------------------------
+        // Local variables
+        // ---------------------------------------------------------------------
+        var ngModelCtrl        = $element.controller('ngModel');
+        var selectOptionsCtrl  = $element.controller('selectOptions');
+        var loadTimeoutPromise = null;
+        var loadedItems        = [];
+
+        // ---------------------------------------------------------------------
+        // Local functions
+        // ---------------------------------------------------------------------
+
+        /**
+         * Loads items (usually from the remote server). Load callback must return a promise
+         * to get the target object.
+         *
+         * @param {*} loadPromise Load callback that must return promise
+         * @param {*} [value] Value to be sent to the promise object.
+         */
+        var loadItems = function(loadPromise, value) {
+            $scope.loadingInProgress = true;
+            loadedItems = [];
+            loadPromise(value).then(function(response) {
+                if (response.data && angular.isArray(response.data))
+                    loadedItems = response.data;
+                $scope.loadingInProgress = false;
+
+            }, function(error) {
+                $scope.loadingInProgress = false;
+                throw error;
+            });
+        };
+
+        // ---------------------------------------------------------------------
+        // Scope functions
+        // ---------------------------------------------------------------------
+
+        /**
+         * Gets the item name that will be used to display in the list.
+         *
+         * @param {Object} item
+         * @returns {string}
+         */
+        $scope.getItemGroup = function(item) {
+            var value = selectOptionsCtrl.parseItemGroup(item);
+            if (value)
+                value = String(value).replace(/<[^>]+>/gm, ''); // strip html from the data here
+
+            return $scope.groupDecorator ? $scope.groupDecorator(item) : value;
+        };
+
+        /**
+         * Gets the group of the item on specific position of the displayed items.
+         *
+         * @param {number} index
+         * @returns {string}
+         */
+        $scope.getItemGroupOfItemsAt = function(index) {
+            return $scope.getItemGroup($scope.getDisplayedItems()[index]);
+        };
+
+        /**
+         * Gets the item name that will be used to display in the list.
+         *
+         * @param {Object} item
+         * @returns {string}
+         */
+        $scope.getItemName = function(item) {
+            var value = selectOptionsCtrl.parseItemName(item);
+            value = String(value).replace(/<[^>]+>/gm, ''); // strip html from the data here
+            return $scope.decorator ? $scope.decorator(item) : selectItemsHighlightWordFilter(value, $scope.searchKeyword);
+        };
+
+        /**
+         * Gets the items that will be used as an options for the model.
+         *
+         * @returns {Object[]}
+         */
+        $scope.getItems = function() {
+            var items = selectOptionsCtrl.parseItems() || [];
+
+            // append loaded items if they exists
+            if (loadedItems.length > 0)
+                items = items.concat(loadedItems);
+
+            // apply custom user filters to the items
+            if ($scope.filters)
+                angular.forEach($scope.filters, function(filter) {
+                    items = filter(items);
+                });
+
+            // limit number of items if necessary
+            if ($scope.showLimit && items.length > $scope.showLimit)
+                items = items.slice(0, $scope.showLimit);
+
+            return items;
+        };
+
+        /**
+         * Gets the items that will be shown in the list.
+         * What it does it appends  | orderBy: orderProperty | filter: itemSearch
+         * to the #getItems method, but in js-code level to get the list of real displayed items.
+         *
+         * @returns {Object[]}
+         */
+        $scope.getDisplayedItems = function() {
+            var items = $scope.getItems();
+            if ($scope.searchKeyword)
+                items = filterFilter(items, $scope.searchKeyword, $scope.searchFilter);
+            if (selectOptionsCtrl.getOrderBy())
+                items = orderByFilter(items, selectOptionsCtrl.getOrderBy());
+            if (selectOptionsCtrl.getGroupBy())
+                items = orderByFilter(items, selectOptionsCtrl.getGroupByWithoutPrefixes());
+
+            return items;
+        };
+
+        /**
+         * Checks if given item is selected.
+         *
+         * @param {object} item
+         * @returns {boolean}
+         */
+        $scope.isItemSelected = function(item) {
+            var model = ngModelCtrl.$modelValue;
+            var value = selectOptionsCtrl.parseItemValue(item);
+            var trackByProperty = selectOptionsCtrl.getTrackBy();
+            var trackByValue    = selectOptionsCtrl.parseTrackBy(item);
+
+            // if no tracking specified simple compare object in the model
+            if (!trackByProperty || !trackByValue)
+                return $scope.multiselect ? (model && model.indexOf(value) !== -1) : model === value;
+
+            // if tracking is specified then searching is more complex
+            if ($scope.multiselect) {
+                var isFound = false;
+                angular.forEach(model, function(m) {
+                    if (m[trackByProperty] === trackByValue)
+                        isFound = true;
+                });
+                return isFound;
+            }
+
+            return model[trackByProperty] === trackByValue;
+        };
+
+        /**
+         * Checks if any item is selected.
+         *
+         * @param {*} item
+         */
+        $scope.areAllGroupItemsSelected = function(item) {
+            if (!$scope.multiselect) return;
+
+            var displayedItems = $scope.getDisplayedItems();
+            var itemGroup = $scope.getItemGroup(item);
+            var isAnyNotSelected = false;
+
+            angular.forEach(displayedItems, function(displayedItem) {
+                if (itemGroup === $scope.getItemGroup(displayedItem))
+                    isAnyNotSelected = isAnyNotSelected || !$scope.isItemSelected(displayedItem);
+            });
+
+            return isAnyNotSelected === false;
+        };
+
+        /**
+         * Checks if any item is selected.
+         *
+         * @returns {boolean}
+         */
+        $scope.isAnyItemSelected = function() {
+            if ($scope.multiselect)
+                return ngModelCtrl.$modelValue && ngModelCtrl.$modelValue.length > 0;
+
+            return ngModelCtrl.$modelValue ? true : false;
+        };
+
+        /**
+         * Checks if all items are selected or not.
+         *
+         * @returns {boolean}
+         */
+        $scope.areAllItemsSelected = function() {
+            var items = $scope.getDisplayedItems();
+            var isAnyNotSelected = false;
+
+            angular.forEach(items, function(item) {
+                isAnyNotSelected = isAnyNotSelected || !$scope.isItemSelected(item);
+            });
+
+            return isAnyNotSelected === false;
+        };
+
+        /**
+         * Selects a given item.
+         *
+         * @param {object} item
+         */
+        $scope.selectItem = function(item) {
+
+            var value = selectOptionsCtrl.parseItemValue(item);
+            var newSelection = false;
+            var index = null;
+
+            // if simple, not multiple mode then
+            var model = value;
+            if ($scope.multiselect) { // otherwise dealing with multiple model
+                model = ngModelCtrl.$modelValue || [];
+
+                if (!$scope.isItemSelected(item) && value !== null) { // in the case if we want to add a new item
+
+                    // if we already reached the limit of selection
+                    if (model.length >= $scope.selectionLimit)
+                        return;
+
+                    if (angular.isDefined($scope.modelInsertPosition))
+                        model.splice($scope.modelInsertPosition, 0, value);
+                    else
+                        model.push(value);
+
+                    index = $scope.modelInsertPosition;
+                    newSelection = true;
+
+                } else { // in the case if we want to remove item from the model
+                    var itemInModel = selectOptionsCtrl.findItemInModel(item, model); // this way we find a real matched item from the model
+                    model.splice(model.indexOf(itemInModel), 1); // find its index in the model and remove it
+                }
+            }
+
+            ngModelCtrl.$setViewValue(model);
+            if ($attrs.onChange) {
+                console.log($attrs.onChange);
+                $timeout(function() {
+                    selectOptionsCtrl.applyOnScope($attrs.onChange);
+                })
+            }
+
+            // tell others that use selected item
+            var eventData = { item: item, isMultiselect: $scope.multiselect, isNewSelection: newSelection, index: index, element: $element[0] };
+            $scope.$emit('select-items.item_selected', eventData);
+        };
+
+        /**
+         * Selects all items in the list.
+         */
+        $scope.selectAllItems = function() {
+            if (!$scope.multiselect) return;
+
+            var items = $scope.getDisplayedItems();
+            angular.forEach(items, function(item) {
+                if (!$scope.isItemSelected(item))
+                    $scope.selectItem(item);
+            });
+        };
+
+        /**
+         * Deselects all items in the list.
+         */
+        $scope.deselectAllItems = function() {
+            if (!$scope.multiselect) return;
+
+            var items = $scope.getDisplayedItems();
+            angular.forEach(items, function(item) {
+                if ($scope.isItemSelected(item))
+                    $scope.selectItem(item);
+            });
+        };
+
+        /**
+         * Toggles all items selection state - if items are selected,
+         * then it deselects them, if items are not selected - then selects them.
+         */
+        $scope.toggleAllItemsSelection = function() {
+            if ($scope.areAllItemsSelected())
+                $scope.deselectAllItems();
+            else
+                $scope.selectAllItems();
+        };
+
+        /**
+         * Selects all items in the given item group.
+         *
+         * @param {*} item
+         */
+        $scope.selectGroupItems = function(item) {
+            if (!$scope.multiselect || !$scope.groupSelectAll) return;
+
+            var itemGroup = $scope.getItemGroup(item);
+            var displayedItems = $scope.getDisplayedItems();
+
+            angular.forEach(displayedItems, function(displayedItem) {
+                if (itemGroup === $scope.getItemGroup(displayedItem) && !$scope.isItemSelected(displayedItem))
+                    $scope.selectItem(displayedItem);
+            });
+        };
+
+        /**
+         * Deselects all items in the list.
+         *
+         * @param {*} item
+         */
+        $scope.deselectGroupItems = function(item) {
+            if (!$scope.multiselect || !$scope.groupSelectAll) return;
+
+            var itemGroup = $scope.getItemGroup(item);
+            var displayedItems = $scope.getDisplayedItems();
+
+            angular.forEach(displayedItems, function(displayedItem) {
+                if (itemGroup === $scope.getItemGroup(displayedItem) && $scope.isItemSelected(displayedItem))
+                    $scope.selectItem(displayedItem);
+            });
+        };
+
+        /**
+         * Toggles items of the given item's group selection state - if items are selected,
+         * then it deselects them, if items are not selected - then selects them.
+         *
+         * @param {*} item
+         */
+        $scope.toggleGroupItemsSelection = function(item) {
+            if (!$scope.multiselect || !$scope.groupSelectAll) return;
+
+            if ($scope.areAllGroupItemsSelected(item))
+                $scope.deselectGroupItems(item);
+            else
+                $scope.selectGroupItems(item);
+        };
+
+        /**
+         * Sets a given item as active.
+         *
+         * @param {object} item
+         */
+        $scope.setActiveItem = function(item) {
+            $scope.activeItem = item;
+        };
+
+        // ---------------------------------------------------------------------
+        // Watchers
+        // ---------------------------------------------------------------------
+
+        if ($scope.loadByKeywordPromise) {
+            $scope.$watch('searchKeyword', function(keyword) {
+                if ($scope.loadByKeywordPromise && keyword && keyword.length >= $scope.loadByKeywordMinQueryLength) {
+                    if (loadTimeoutPromise !== null)
+                        $timeout.cancel(loadTimeoutPromise);
+
+                    loadTimeoutPromise = $timeout(function() { loadItems($scope.loadByKeywordPromise, keyword); }, $scope.loadByKeywordDelay);
+                }
+            });
+        }
+
+        // ---------------------------------------------------------------------
+        // Event listeners
+        // ---------------------------------------------------------------------
+
+        // when this event comes it makes active a next item in the list of displayed items as active
+        $scope.$on('select-items.active_next', function() {
+            var activeItem = SelectItemsActiveItemNavigator.previous($scope.getDisplayedItems(), $scope.activeItem);
+            if (activeItem || !$scope.multiselect) {
+                $scope.activeItem = activeItem;
+            }
+        });
+
+        // when this event comes it makes active a previous item in the list of displayed items
+        $scope.$on('select-items.active_previous', function() {
+            $scope.activeItem = SelectItemsActiveItemNavigator.next($scope.getDisplayedItems(), $scope.activeItem);
+        });
+
+        // when this event comes it selects (adds to the model) a currently active item
+        var _this = this;
+        $scope.$on('select-items.select_active', function(event) {
+            event.isItemSelected = _this.selectActive();
+        });
+
+        // cleanup after directive and its scope is destroyed
+        $scope.$on('$destroy', function() {
+            if (loadTimeoutPromise)
+                $timeout.cancel(loadTimeoutPromise);
+        });
+
+        this.selectActive = function() {
+            var displayedItems = $scope.getDisplayedItems();
+            if (displayedItems.length > 0 && displayedItems.indexOf($scope.activeItem) !== -1) {
+                $scope.selectItem($scope.activeItem);
+                return true;
+            }
+
+            return false;
+        };
+
+        // ---------------------------------------------------------------------
+        // Initialization
+        // ---------------------------------------------------------------------
+
+        // if auto-select option is given then auto select first item in the displayed list of items
+        if ($scope.autoSelect) {
+            var displayedItems = $scope.getDisplayedItems();
+            if (displayedItems.length > 0)
+                $scope.selectItem(displayedItems[0]);
+        }
+
+        // watch for load promise and load items when its changed
+        $scope.$watch('loadPromise', function(loadPromise) {
+            if (!loadPromise) return;
+            loadItems(loadPromise);
+        });
+
     }
 
 })();

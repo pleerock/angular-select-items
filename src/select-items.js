@@ -92,8 +92,6 @@
                 loadingLabel: '@',
                 loadPromise: '=?',
                 loadByKeywordPromise: '=?',
-                loadByKeywordDelay: '=?',
-                loadByKeywordMinQueryLength: '@',
                 filters: '=?',
                 decorator: '=?',
                 groupDecorator: '=?',
@@ -128,8 +126,9 @@
         $scope.deselectAllLabel              = $scope.deselectAllLabel  || selectItemsConfiguration.deselectAllLabel;
         $scope.noSelectionLabel              = $scope.noSelectionLabel  || selectItemsConfiguration.noSelectionLabel;
         $scope.loadingLabel                  = $scope.loadingLabel      || selectItemsConfiguration.loadingLabel;
-        $scope.loadByKeywordMinQueryLength   = $scope.loadByKeywordMinQueryLength ? parseInt($scope.loadByKeywordMinQueryLength) : selectItemsConfiguration.loadMinQueryLength;
-        $scope.loadByKeywordDelay            = $scope.loadByKeywordDelay ? parseInt($attrs.loadByKeywordDelay) : selectItemsConfiguration.loadByKeywordDelay;
+
+        var loadByKeywordMinQueryLength   = $attrs.loadByKeywordMinQueryLength ? parseInt($attrs.loadByKeywordMinQueryLength) : selectItemsConfiguration.loadMinQueryLength;
+        var loadByKeywordDelay            = $attrs.loadByKeywordDelay ? parseInt($attrs.loadByKeywordDelay) : selectItemsConfiguration.loadByKeywordDelay;
 
         // ---------------------------------------------------------------------
         // Local variables
@@ -475,11 +474,11 @@
 
         if ($scope.loadByKeywordPromise) {
             $scope.$watch('searchKeyword', function(keyword) {
-                if ($scope.loadByKeywordPromise && keyword && keyword.length >= $scope.loadByKeywordMinQueryLength) {
+                if ($scope.loadByKeywordPromise && keyword && keyword.length >= loadByKeywordMinQueryLength) {
                     if (loadTimeoutPromise !== null)
                         $timeout.cancel(loadTimeoutPromise);
 
-                    loadTimeoutPromise = $timeout(function() { loadItems($scope.loadByKeywordPromise, keyword); }, $scope.loadByKeywordDelay);
+                    loadTimeoutPromise = $timeout(function() { loadItems($scope.loadByKeywordPromise, keyword); }, loadByKeywordDelay);
                 }
             });
         }

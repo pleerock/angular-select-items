@@ -202,7 +202,7 @@ angular.module("selectItems").run(["$templateCache", function($templateCache) {$
         $scope.deselectAllLabel              = $scope.deselectAllLabel  || selectItemsConfiguration.deselectAllLabel;
         $scope.noSelectionLabel              = $scope.noSelectionLabel  || selectItemsConfiguration.noSelectionLabel;
         $scope.loadingLabel                  = $scope.loadingLabel      || selectItemsConfiguration.loadingLabel;
-        $scope.loadByKeywordMinQueryLength   = $attrs.loadByKeywordMinQueryLength ? parseInt($attrs.loadByKeywordMinQueryLength) : selectItemsConfiguration.loadMinQueryLength;
+        $scope.loadByKeywordMinQueryLength   = $scope.loadByKeywordMinQueryLength ? parseInt($scope.loadByKeywordMinQueryLength) : selectItemsConfiguration.loadMinQueryLength;
         $scope.loadByKeywordDelay            = $scope.loadByKeywordDelay ? parseInt($attrs.loadByKeywordDelay) : selectItemsConfiguration.loadByKeywordDelay;
 
         // ---------------------------------------------------------------------

@@ -148,11 +148,13 @@
          *
          * @param {*} loadPromise Load callback that must return promise
          * @param {*} [value] Value to be sent to the promise object.
+         * @returns {promise}
          */
         var loadItems = function(loadPromise, value) {
             $scope.loadingInProgress = true;
             loadedItems = [];
-            loadPromise(value).then(function(response) {
+            var promise = loadPromise(value);
+            promise.then(function(response) {
                 if (response.data && angular.isArray(response.data))
                     loadedItems = response.data;
                 $scope.loadingInProgress = false;
@@ -161,6 +163,16 @@
                 $scope.loadingInProgress = false;
                 throw error;
             });
+            return promise;
+        };
+
+        /**
+         * If auto-select option is given then auto select first item in the displayed list of items
+         */
+        var autoSelectFirstItem = function() {
+            var displayedItems = $scope.getDisplayedItems();
+            if (displayedItems.length > 0)
+                $scope.selectItem(displayedItems[0]);
         };
 
         // ---------------------------------------------------------------------
@@ -362,7 +374,6 @@
 
             ngModelCtrl.$setViewValue(model);
             if ($attrs.onChange) {
-                console.log($attrs.onChange);
                 $timeout(function() {
                     selectOptionsCtrl.applyOnScope($attrs.onChange);
                 })
@@ -526,17 +537,16 @@
         // Initialization
         // ---------------------------------------------------------------------
 
-        // if auto-select option is given then auto select first item in the displayed list of items
-        if ($scope.autoSelect) {
-            var displayedItems = $scope.getDisplayedItems();
-            if (displayedItems.length > 0)
-                $scope.selectItem(displayedItems[0]);
-        }
+        if ($scope.autoSelect)
+            autoSelectFirstItem();
 
         // watch for load promise and load items when its changed
         $scope.$watch('loadPromise', function(loadPromise) {
             if (!loadPromise) return;
-            loadItems(loadPromise);
+            loadItems(loadPromise).then(function() {
+                if ($scope.autoSelect)
+                    autoSelectFirstItem();
+            });
         });
 
     }

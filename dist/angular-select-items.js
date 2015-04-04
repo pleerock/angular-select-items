@@ -14,7 +14,7 @@
     angular.module('selectItems', ['selectOptions', 'disableAll', 'ngSanitize']);
 
 })();
-angular.module("selectItems").run(["$templateCache", function($templateCache) {$templateCache.put("select-items.html","<div class=\"select-items\"\n     ng-show=\"search\n            || (loadingInProgress && loadingLabel)\n            || (multiselect && selectAll && getDisplayedItems().length > 0)\n            || (!multiselect && !autoSelect && !hideNoSelection && noSelectionLabel)\n            || getDisplayedItems().length > 0\"\n        disable-all=\"disabled\"> <!-- todo: try to cache displayed items length -->\n    <ul>\n        <li ng-show=\"loadingInProgress\" class=\"select-list-item\">{{ loadingLabel }}</li>\n        <li ng-show=\"search && !loadingInProgress\" class=\"select-items-search select-list-item\">\n            <input ng-model=\"searchKeyword\" ng-attr-placeholder=\"{{ searchPlaceholder }}\">\n        </li>\n        <li class=\"select-all select-list-item\"\n            ng-class=\"{ \'can-be-active\' : activeItem === null }\"\n            ng-show=\"multiselect && selectAll && getDisplayedItems().length > 0\"\n            ng-mouseover=\"setActiveItem(null)\"\n            ng-click=\"toggleAllItemsSelection()\">\n            <input ng-show=\"!hideControls\" type=\"checkbox\" ng-checked=\"areAllItemsSelected()\">\n            <span class=\"select-all\">{{ areAllItemsSelected() ? deselectAllLabel : selectAllLabel }}</span>\n        </li>\n        <li ng-show=\"!multiselect && !autoSelect && !hideNoSelection && noSelectionLabel && getDisplayedItems().length > 0\"\n            ng-click=\"selectItem()\"\n            ng-mouseover=\"setActiveItem(null)\"\n            ng-class=\"{ \'active\' : !activeItem }\"\n            class=\"no-selection select-list-item\">\n            <input ng-show=\"!hideControls\" type=\"radio\" ng-checked=\"!isAnyItemSelected()\"> {{ noSelectionLabel }}\n        </li>\n        <li ng-repeat=\"item in getDisplayedItems()\"\n            class=\"select-item\">\n            <div class=\"select-item-container\">\n                <div class=\"select-list-item select-items-group\"\n                     ng-class=\"{ \'all-selected\': areAllGroupItemsSelected(item), \'select-all-enabled\': groupSelectAll }\"\n                     ng-mouseover=\"setActiveItem(null)\"\n                     ng-show=\"($index === 0 || getItemGroup(item) !== getItemGroupOfItemsAt($index - 1)) && getItemGroup(item)\"\n                     ng-click=\"toggleGroupItemsSelection(item)\">\n                    <input class=\"item-control\"\n                           ng-show=\"groupSelectAll\"\n                           type=\"checkbox\"\n                           ng-checked=\"areAllGroupItemsSelected(item)\">\n                    <span class=\"select-item-group-template\" ng-bind-html=\"getItemGroup(item)\"></span>\n                </div>\n                <div class=\"select-list-item\"\n                     ng-mouseover=\"setActiveItem(item)\"\n                     ng-click=\"selectItem(item)\"\n                     ng-class=\"{ \'active\' : activeItem === item, \'selected\': isItemSelected(item) }\">\n                    <input class=\"item-control\"\n                           ng-show=\"!hideControls\"\n                           ng-attr-type=\"{{ multiselect ? \'checkbox\' : \'radio\' }}\"\n                           ng-disabled=\"selectionLimit > 0 && ngModel.length >= selectionLimit && !isItemSelected(item)\"\n                           ng-checked=\"isItemSelected(item)\">\n                    <span class=\"select-item-template\" ng-bind-html=\"getItemName(item)\"></span>\n                </div>\n            </div>\n        </li>\n    </ul>\n</div>");}]);
+angular.module("selectItems").run(["$templateCache", function($templateCache) {$templateCache.put("select-items.html","<div class=\"select-items\"\n     ng-show=\"isShown()\"\n     disable-all=\"disabled\"> <!-- todo: try to cache displayed items length -->\n    <ul>\n        <li ng-show=\"loadingInProgress\" class=\"select-list-item\">{{ loadingLabel }}</li>\n        <li ng-show=\"search && !loadingInProgress\" class=\"select-items-search select-list-item\">\n            <input ng-model=\"searchKeyword\" ng-attr-placeholder=\"{{ searchPlaceholder }}\">\n        </li>\n        <li class=\"select-all select-list-item\"\n            ng-class=\"{ \'can-be-active\' : activeItem === null }\"\n            ng-show=\"multiselect && selectAll && getDisplayedItems().length > 0\"\n            ng-mouseover=\"setActiveItem(null)\"\n            ng-click=\"toggleAllItemsSelection()\">\n            <input ng-show=\"!hideControls\" type=\"checkbox\" ng-checked=\"areAllItemsSelected()\">\n            <span class=\"select-all\">{{ areAllItemsSelected() ? deselectAllLabel : selectAllLabel }}</span>\n        </li>\n        <li ng-show=\"!multiselect && !autoSelect && !hideNoSelection && noSelectionLabel && getDisplayedItems().length > 0\"\n            ng-click=\"selectItem()\"\n            ng-mouseover=\"setActiveItem(null)\"\n            ng-class=\"{ \'active\' : !activeItem }\"\n            class=\"no-selection select-list-item\">\n            <input ng-show=\"!hideControls\" type=\"radio\" ng-checked=\"!isAnyItemSelected()\"> {{ noSelectionLabel }}\n        </li>\n        <li ng-repeat=\"item in getDisplayedItems()\"\n            class=\"select-item\">\n            <div class=\"select-item-container\">\n                <div class=\"select-list-item select-items-group\"\n                     ng-class=\"{ \'all-selected\': areAllGroupItemsSelected(item), \'select-all-enabled\': groupSelectAll }\"\n                     ng-mouseover=\"setActiveItem(null)\"\n                     ng-show=\"($index === 0 || getItemGroup(item) !== getItemGroupOfItemsAt($index - 1)) && getItemGroup(item)\"\n                     ng-click=\"toggleGroupItemsSelection(item)\">\n                    <input class=\"item-control\"\n                           ng-show=\"groupSelectAll\"\n                           type=\"checkbox\"\n                           ng-checked=\"areAllGroupItemsSelected(item)\">\n                    <span class=\"select-item-group-template\" ng-bind-html=\"getItemGroup(item)\"></span>\n                </div>\n                <div class=\"select-list-item\"\n                     ng-mouseover=\"setActiveItem(item)\"\n                     ng-click=\"selectItem(item)\"\n                     ng-class=\"{ \'active\' : activeItem === item, \'selected\': isItemSelected(item) }\">\n                    <input class=\"item-control\"\n                           ng-show=\"!hideControls\"\n                           ng-attr-type=\"{{ multiselect ? \'checkbox\' : \'radio\' }}\"\n                           ng-disabled=\"selectionLimit > 0 && ngModel.length >= selectionLimit && !isItemSelected(item)\"\n                           ng-checked=\"isItemSelected(item)\">\n                    <span class=\"select-item-template\" ng-bind-html=\"getItemName(item)\"></span>\n                </div>\n            </div>\n        </li>\n    </ul>\n</div>");}]);
 /**
  * @author Umed Khudoiberdiev <info@zar.tj>
  */
@@ -109,6 +109,7 @@ angular.module("selectItems").run(["$templateCache", function($templateCache) {$
      *                               checkboxes and radio boxes
      * @param {boolean} hideNoSelection If set to true, then all "nothing is selected" label and checkbox will not be
      *                                      shown. This label show only in single select mode
+     * @param {boolean} hideSelectedItems If set to true, then already selected items will not be shown in the dropdown
      * @param {string} searchPlaceholder Custom placeholder text that will be in the search box
      * @param {string} selectAllLabel Custom text that will be used as a "select all" label.
      *                                  This label show only in single select mode
@@ -159,6 +160,7 @@ angular.module("selectItems").run(["$templateCache", function($templateCache) {$
                 groupSelectAll: '=?',
                 hideControls: '=?',
                 hideNoSelection: '=?',
+                hideSelectedItems: '=?',
                 searchPlaceholder: '@',
                 selectAllLabel: '@',
                 deselectAllLabel: '@',
@@ -222,11 +224,13 @@ angular.module("selectItems").run(["$templateCache", function($templateCache) {$
          *
          * @param {*} loadPromise Load callback that must return promise
          * @param {*} [value] Value to be sent to the promise object.
+         * @returns {promise}
          */
         var loadItems = function(loadPromise, value) {
             $scope.loadingInProgress = true;
             loadedItems = [];
-            loadPromise(value).then(function(response) {
+            var promise = loadPromise(value);
+            promise.then(function(response) {
                 if (response.data && angular.isArray(response.data))
                     loadedItems = response.data;
                 $scope.loadingInProgress = false;
@@ -235,11 +239,38 @@ angular.module("selectItems").run(["$templateCache", function($templateCache) {$
                 $scope.loadingInProgress = false;
                 throw error;
             });
+            return promise;
+        };
+
+        /**
+         * If auto-select option is given then auto select first item in the displayed list of items
+         */
+        var autoSelectFirstItem = function() {
+            var displayedItems = $scope.getDisplayedItems();
+            if (displayedItems.length > 0)
+                $scope.selectItem(displayedItems[0]);
         };
 
         // ---------------------------------------------------------------------
         // Scope functions
         // ---------------------------------------------------------------------
+
+        /**
+         * Checks if select-items can be shown or not.
+         *
+         * @returns {boolean}
+         */
+        $scope.isShown = function() {
+            return (
+            $scope.search ||
+            ($scope.loadingInProgress && $scope.loadingLabel) ||
+            ($scope.multiselect && $scope.selectAll && $scope.getDisplayedItems().length > 0) ||
+            (!$scope.multiselect && !$scope.autoSelect && !$scope.hideNoSelection && $scope.noSelectionLabel) ||
+            ($scope.getDisplayedItems().length > 0)
+            );
+        };
+
+        this.isShown = $scope.isShown;
 
         /**
          * Gets the item name that will be used to display in the list.
@@ -317,6 +348,16 @@ angular.module("selectItems").run(["$templateCache", function($templateCache) {$
                 items = orderByFilter(items, selectOptionsCtrl.getOrderBy());
             if (selectOptionsCtrl.getGroupBy())
                 items = orderByFilter(items, selectOptionsCtrl.getGroupByWithoutPrefixes());
+
+            if ($scope.hideSelectedItems) {
+                var filteredItems = [];
+                angular.forEach(items, function(item) {
+                    if (!$scope.isItemSelected(item)) {
+                        filteredItems.push(item);
+                    }
+                });
+                return filteredItems;
+            }
 
             return items;
         };
@@ -436,7 +477,6 @@ angular.module("selectItems").run(["$templateCache", function($templateCache) {$
 
             ngModelCtrl.$setViewValue(model);
             if ($attrs.onChange) {
-                console.log($attrs.onChange);
                 $timeout(function() {
                     selectOptionsCtrl.applyOnScope($attrs.onChange);
                 })
@@ -600,17 +640,16 @@ angular.module("selectItems").run(["$templateCache", function($templateCache) {$
         // Initialization
         // ---------------------------------------------------------------------
 
-        // if auto-select option is given then auto select first item in the displayed list of items
-        if ($scope.autoSelect) {
-            var displayedItems = $scope.getDisplayedItems();
-            if (displayedItems.length > 0)
-                $scope.selectItem(displayedItems[0]);
-        }
+        if ($scope.autoSelect)
+            autoSelectFirstItem();
 
         // watch for load promise and load items when its changed
         $scope.$watch('loadPromise', function(loadPromise) {
             if (!loadPromise) return;
-            loadItems(loadPromise);
+            loadItems(loadPromise).then(function() {
+                if ($scope.autoSelect)
+                    autoSelectFirstItem();
+            });
         });
 
     }

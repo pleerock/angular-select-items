@@ -17,6 +17,7 @@
 
 .select-items ul li input[type="checkbox"], ul.select-items li input[type="radio"] {
     cursor: pointer;
+    width: auto;
 }
 
 /* select-items directive + groups used */

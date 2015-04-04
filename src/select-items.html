@@ -1,10 +1,6 @@
 <div class="select-items"
-     ng-show="search
-            || (loadingInProgress && loadingLabel)
-            || (multiselect && selectAll && getDisplayedItems().length > 0)
-            || (!multiselect && !autoSelect && !hideNoSelection && noSelectionLabel)
-            || getDisplayedItems().length > 0"
-        disable-all="disabled"> <!-- todo: try to cache displayed items length -->
+     ng-show="isShown()"
+     disable-all="disabled"> <!-- todo: try to cache displayed items length -->
     <ul>
         <li ng-show="loadingInProgress" class="select-list-item">{{ loadingLabel }}</li>
         <li ng-show="search && !loadingInProgress" class="select-items-search select-list-item">

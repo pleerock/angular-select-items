@@ -35,6 +35,7 @@
      *                               checkboxes and radio boxes
      * @param {boolean} hideNoSelection If set to true, then all "nothing is selected" label and checkbox will not be
      *                                      shown. This label show only in single select mode
+     * @param {boolean} hideSelectedItems If set to true, then already selected items will not be shown in the dropdown
      * @param {string} searchPlaceholder Custom placeholder text that will be in the search box
      * @param {string} selectAllLabel Custom text that will be used as a "select all" label.
      *                                  This label show only in single select mode
@@ -85,6 +86,7 @@
                 groupSelectAll: '=?',
                 hideControls: '=?',
                 hideNoSelection: '=?',
+                hideSelectedItems: '=?',
                 searchPlaceholder: '@',
                 selectAllLabel: '@',
                 deselectAllLabel: '@',
@@ -180,6 +182,23 @@
         // ---------------------------------------------------------------------
 
         /**
+         * Checks if select-items can be shown or not.
+         *
+         * @returns {boolean}
+         */
+        $scope.isShown = function() {
+            return (
+            $scope.search ||
+            ($scope.loadingInProgress && $scope.loadingLabel) ||
+            ($scope.multiselect && $scope.selectAll && $scope.getDisplayedItems().length > 0) ||
+            (!$scope.multiselect && !$scope.autoSelect && !$scope.hideNoSelection && $scope.noSelectionLabel) ||
+            ($scope.getDisplayedItems().length > 0)
+            );
+        };
+
+        this.isShown = $scope.isShown;
+
+        /**
          * Gets the item name that will be used to display in the list.
          *
          * @param {Object} item
@@ -255,6 +274,16 @@
                 items = orderByFilter(items, selectOptionsCtrl.getOrderBy());
             if (selectOptionsCtrl.getGroupBy())
                 items = orderByFilter(items, selectOptionsCtrl.getGroupByWithoutPrefixes());
+
+            if ($scope.hideSelectedItems) {
+                var filteredItems = [];
+                angular.forEach(items, function(item) {
+                    if (!$scope.isItemSelected(item)) {
+                        filteredItems.push(item);
+                    }
+                });
+                return filteredItems;
+            }
 
             return items;
         };

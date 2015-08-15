@@ -640,14 +640,14 @@ angular.module("selectItems").run(["$templateCache", function($templateCache) {$
         // Initialization
         // ---------------------------------------------------------------------
 
-        if ($scope.autoSelect)
+        if ($scope.autoSelect && !$scope.ngModel)
             autoSelectFirstItem();
 
         // watch for load promise and load items when its changed
         $scope.$watch('loadPromise', function(loadPromise) {
             if (!loadPromise) return;
             loadItems(loadPromise).then(function() {
-                if ($scope.autoSelect)
+                if ($scope.autoSelect && !$scope.ngModel)
                     autoSelectFirstItem();
             });
         });

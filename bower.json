@@ -1,7 +1,7 @@
 {
   "name": "angular-select-items",
   "description": "A special angular directive used with input to make input to grow as soon as user types text.",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "keywords": ["select-items", "angular-select-items"],
   "authors": [
     { "name": "Umed Khudoiberdiev", "email": "info@zar.tj" }

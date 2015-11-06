@@ -172,7 +172,8 @@ angular.module("selectItems").run(["$templateCache", function($templateCache) {$
                 decorator: '=?',
                 groupDecorator: '=?',
                 activeItem: '=?',
-                modelInsertPosition: '=?'
+                modelInsertPosition: '=?',
+                templateVars: '=?'
             },
             replace: true,
             restrict: 'E',
@@ -191,6 +192,16 @@ angular.module("selectItems").run(["$templateCache", function($templateCache) {$
      */
     function SelectItemsCtrl($scope, $element, $attrs, $timeout, orderByFilter, filterFilter, selectItemsConfiguration,
                              SelectItemsActiveItemNavigator, selectItemsHighlightWordFilter) {
+
+        // ---------------------------------------------------------------------
+        // Scope variables came from extra template vars passed
+        // ---------------------------------------------------------------------
+
+        if ($scope.templateVars && typeof $scope.templateVars === 'object') {
+            Object.keys($scope.templateVars).forEach(function(key) {
+                $scope[key] = $scope.templateVars[key];
+            });
+        }
 
         // ---------------------------------------------------------------------
         // Scope variables
